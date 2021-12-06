@@ -55,6 +55,8 @@ function getCenter(imgData, threshold){
 }
 
 
+var centersTracked = [];
+var trackLength = 15;
 
 doFrame = window.setInterval(function(){
     ctx2.drawImage(video, 0, 0, canvas2.width, canvas2.height);
@@ -65,12 +67,24 @@ doFrame = window.setInterval(function(){
     ctx.putImageData(diffImgData,0,0);
 
     let motionCenter = getCenter(diffImgData,150,320,240);
+    centersTracked.push(motionCenter)
+    while(centersTracked.length>trackLength){
+        centersTracked.shift();
+    }
     ctx.beginPath();
     ctx.fillStyle = "#ff0000"
     ctx.rect(motionCenter[0]-5,motionCenter[1]-5,10,10);
     ctx.fill();
     ctx.closePath();
-    console.log(motionCenter)
+
+    for(let i = 0; i<centersTracked.length; i++){
+        ctx.beginPath();
+        ctx.fillStyle = "#ff0000"
+        ctx.rect(centersTracked[i][0]-2,centersTracked[i][1]-2,4,4);
+        ctx.fill();
+        ctx.closePath();
+
+    }
 
     ctx2.drawImage(video, 0, 0, canvas2.width, canvas2.height);
     lastImg = ctx2.getImageData(0,0,320,240);
