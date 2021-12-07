@@ -94,19 +94,22 @@ doFrame = window.setInterval(function(){
         ctx.closePath();
 
     }
-    let trackBack = 3;
+    let trackBack = 2;
 
     if(!(isNaN(motionCenter[0])||isNaN(motionCenter[1]))&&!((isNaN(centersTracked[trackLength-trackBack][0])||isNaN(centersTracked[trackLength-trackBack][1])))){
         //pew pew!
         let x = motionCenter[0];
         let y = motionCenter[1];
         let dir = Math.atan2(motionCenter[1]-centersTracked[trackLength-trackBack][1],motionCenter[0]-centersTracked[trackLength-trackBack][0]);
-        let speed = 15;
-        let radius = 10;
+     //   let speed = Math.sqrt(Math.pow(motionCenter[1]-centersTracked[trackLength-trackBack][1],2)+Math.pow(motionCenter[1]-centersTracked[trackLength-trackBack][1],2));
+        let speed = 10;
+        let radius = 5;
         let lifetime = 40;
 
-        makeSnowflake(x,y,dir,speed,radius,lifetime)
-
+        for(let i = dir-(5/180*3.14)*5; i<dir+(5/180*3.14)*5; i+=(5/180*3.14)){
+            let random = Math.random()*10
+        makeSnowflake(x,y,i,speed+random-5,radius,lifetime)
+        }
     }
 
 
@@ -130,7 +133,7 @@ gameFrame = window.setInterval(function(){
     gameCtx.drawImage(snowBg,0,0,640,360)
 
 for(let i = 0; i<snowflakeX.length; i++){
-    gameCtx.fillStyle = 'rgba(255, 0, 0, 1)';
+    gameCtx.fillStyle = 'rgb(175,171,171)';
 
     snowflakeX[i]+= Math.cos(snowflakeDirection[i])*snowflakeSpeed[i];
     snowflakeY[i]+= Math.sin(snowflakeDirection[i])*snowflakeSpeed[i];
@@ -139,7 +142,7 @@ for(let i = 0; i<snowflakeX.length; i++){
     snowflakeSpeed[i]/=1.1;
 
     if(snowflakeTimeLeft[i]<10){
-        gameCtx.fillStyle = 'rgba(255, 0, 0,'+(0.1*(snowflakeTimeLeft[i]))+')';
+        gameCtx.fillStyle = 'rgba(175,171, 171,'+(0.1*(snowflakeTimeLeft[i]))+')';
     }
 if(snowflakeTimeLeft[0]<1){
     snowflakeX.shift();
